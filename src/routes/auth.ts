@@ -4,7 +4,7 @@ import { User } from "../entities/User";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import cookie from "cookie";
-import { strict } from "assert";
+import auth from "../middleware/authMidd";
 
 const register = async (req: Request, res: Response) => {
   const { email, userName, password } = req.body;
@@ -50,12 +50,12 @@ const login = async (req: Request, res: Response) => {
   if (!matchPass)
     return res.status(400).json({ password: "Pass is incorrect!" });
 
-  const token = jwt.sign({ userName }, "secretkey");
+  const token = jwt.sign({ userName }, "" + process.env.SECRET_KEY);
   res.set(
     "Set-Cookie",
     cookie.serialize("token", token, {
       httpOnly: true,
-      secure: false,
+      secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
       maxAge: 36000,
       path: "/",
@@ -64,8 +64,28 @@ const login = async (req: Request, res: Response) => {
   return res.status(200).json({ user, token });
 };
 
+const me = (req: Request, res: Response) => {
+  return res.json(res.locals.user);
+};
+
+const logout = (req: Request, res: Response) => {
+  res.set(
+    "Set-Cookie",
+    cookie.serialize("token", "", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      expires: new Date(0),
+      path: "/",
+    })
+  );
+  return res.status(200).send("Logged out!");
+};
+
 const router = Router();
 router.post("/register", register);
 router.get("/login", login);
+router.get("/me", auth, me);
+router.get("/logout", auth, logout);
 
 export default router;
