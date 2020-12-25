@@ -8,7 +8,10 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-import router from "./routes/auth";
+import authRoutes from "./routes/auth";
+import postRoutes from "./routes/posts";
+import subRoutes from "./routes/subs";
+
 import trim from "./middleware/trim";
 
 const app = express();
@@ -17,7 +20,10 @@ app.use(morgan("dev"));
 app.use(trim);
 app.use(cookieParser());
 
-app.use("/api/auth/", router);
+app.use("/api/auth/", authRoutes);
+app.use("/api/posts/", postRoutes);
+app.use("/api/subs/", subRoutes);
+
 app.get("/", (req, res) => {
   res.send("Hello WOrld!");
 });
