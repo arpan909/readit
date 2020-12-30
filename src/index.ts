@@ -24,7 +24,7 @@ app.use("/api/auth/", authRoutes);
 app.use("/api/posts/", postRoutes);
 app.use("/api/subs/", subRoutes);
 
-app.get("/", (req, res) => {
+app.get("/", (_, res) => {
   res.send("Hello WOrld!");
 });
 

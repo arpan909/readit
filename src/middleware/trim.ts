@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 
-const trimValidator = (req: Request, res: Response, next: NextFunction) => {
+const trimValidator = (req: Request, _: Response, next: NextFunction) => {
   const exceptions = ["password"];
   Object.keys(req.body).forEach((key) => {
     if (!exceptions.includes(key) && typeof req.body[key] === "string") {

@@ -8,7 +8,6 @@ import {
 } from "typeorm";
 import { User } from "./User";
 import Entity from "./Entity";
-import { makeId, string_to_slug } from "../utils/helper";
 import { Post } from "./Post";
 
 @TOEntity("subs")

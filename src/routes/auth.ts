@@ -32,7 +32,7 @@ const register = async (req: Request, res: Response) => {
     await user.save();
 
     //Returning the userdata
-    res.json(user);
+    return res.json(user);
   } catch (error) {
     console.log(error);
     return res.status(500).json(error);
@@ -64,11 +64,11 @@ const login = async (req: Request, res: Response) => {
   return res.status(200).json({ user, token });
 };
 
-const me = (req: Request, res: Response) => {
+const me = (_: Request, res: Response) => {
   return res.json(res.locals.user);
 };
 
-const logout = (req: Request, res: Response) => {
+const logout = (_: Request, res: Response) => {
   res.set(
     "Set-Cookie",
     cookie.serialize("token", "", {

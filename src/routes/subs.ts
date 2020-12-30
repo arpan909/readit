@@ -13,7 +13,7 @@ const createSub = async (req: Request, res: Response) => {
     if (title.trim() === "") errors.title = "Title cant be empty!";
 
     //Unique name validation
-    const sub = await Sub.findOne({ name });
+    const sub = await Sub.findOne({ name: name.toLowerCase() });
     if (sub) errors.name = "Sub already exists!";
     if (Object.keys(errors).length > 0) throw errors;
   } catch (error) {
