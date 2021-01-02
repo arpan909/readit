@@ -3,6 +3,7 @@ import { createConnection } from "typeorm";
 import express from "express";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 
 import dotenv from "dotenv";
 
@@ -19,6 +20,13 @@ app.use(express.json());
 app.use(morgan("dev"));
 app.use(trim);
 app.use(cookieParser());
+app.use(
+  cors({
+    credentials: true,
+    origin: "http://localhost:3000",
+    optionsSuccessStatus: 200,
+  })
+);
 
 app.use("/api/auth/", authRoutes);
 app.use("/api/posts/", postRoutes);
