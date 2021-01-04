@@ -36,8 +36,8 @@ app.get("/", (_, res) => {
   res.send("Hello WOrld!");
 });
 
-app.listen(5000, async () => {
-  console.log("Server started at http://localhost:/5000");
+app.listen(5001, async () => {
+  console.log("Server started at http://localhost:/5001");
   try {
     await createConnection();
     console.log("Database Connected!");

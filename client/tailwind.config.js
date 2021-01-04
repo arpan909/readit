@@ -6,6 +6,8 @@ module.exports = {
       fontFamily: {
         body: ["IBM Plex Sans"],
       },
+      backgroundColor: ["group-focus"],
+
       colors: {
         blue: {
           100: "#cce4f6",
@@ -21,6 +23,7 @@ module.exports = {
       },
       spacing: {
         70: "17.5rem",
+        160: "40rem",
       },
     },
   },
