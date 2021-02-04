@@ -5,6 +5,7 @@ import {
   ManyToOne,
   JoinColumn,
   BeforeInsert,
+  OneToMany,
 } from "typeorm";
 
 import { User } from "./User";
@@ -12,6 +13,8 @@ import Entity from "./Entity";
 import { Post } from "./Post";
 
 import { makeId } from "../utils/helper";
+import { Vote } from "./Votes";
+import { Expose } from "class-transformer";
 
 @TOEntity("comments")
 export class Comment extends Entity {
@@ -36,6 +39,19 @@ export class Comment extends Entity {
 
   @ManyToOne(() => Post, (post) => post.comment, { nullable: false })
   post: Post;
+
+  @OneToMany(() => Vote, (vote) => vote.comment)
+  votes: Vote[];
+
+  @Expose()
+  public get voteScore(): number {
+    return this.votes?.reduce((prev, curr) => prev + (curr.value || 0), 0);
+  }
+  protected userVote: number;
+  setUserVote(user: User) {
+    const index = this.votes.findIndex((v) => v.userName === user.userName);
+    this.userVote = index > -1 ? this.votes[index].value : 0;
+  }
 
   @BeforeInsert()
   makeIdAndSlug() {

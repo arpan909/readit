@@ -12,6 +12,7 @@ dotenv.config();
 import authRoutes from "./routes/auth";
 import postRoutes from "./routes/posts";
 import subRoutes from "./routes/subs";
+import voteRoutes from "./routes/misc";
 
 import trim from "./middleware/trim";
 
@@ -31,6 +32,7 @@ app.use(
 app.use("/api/auth/", authRoutes);
 app.use("/api/posts/", postRoutes);
 app.use("/api/subs/", subRoutes);
+app.use("/api/misc/", voteRoutes);
 
 app.get("/", (_, res) => {
   res.send("Hello WOrld!");

@@ -1,0 +1,30 @@
+import { Column, Entity as TOEntity, JoinColumn, ManyToOne } from "typeorm";
+import { Comment } from "./Comment";
+
+import Entity from "./Entity";
+import { Post } from "./Post";
+import { User } from "./User";
+
+@TOEntity("votes")
+export class Vote extends Entity {
+  constructor(vote: Partial<Vote>) {
+    super();
+    Object.assign(this, vote);
+  }
+
+  @Column()
+  value: number;
+
+  @ManyToOne(() => User)
+  @JoinColumn({ name: "userName", referencedColumnName: "userName" })
+  user: User;
+
+  @Column()
+  userName: string;
+
+  @ManyToOne(() => Post)
+  post: Post;
+
+  @ManyToOne(() => Comment)
+  comment: Comment;
+}

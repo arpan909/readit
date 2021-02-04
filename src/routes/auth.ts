@@ -21,7 +21,7 @@ const register = async (req: Request, res: Response) => {
     const emailUser = await User.findOne({ email });
     const userNameUser = await User.findOne({ userName });
 
-    console.log(userNameUser);
+    // console.log(userNameUser);
 
     let errors: any = {};
     if (emailUser) {
@@ -37,6 +37,8 @@ const register = async (req: Request, res: Response) => {
     errors = await validate(user);
 
     if (errors.length > 0) {
+      console.log(errors);
+
       return res.status(400).json(mapErrors(errors));
     }
     await user.save();

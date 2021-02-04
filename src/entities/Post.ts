@@ -12,6 +12,8 @@ import Entity from "./Entity";
 import { makeId, string_to_slug } from "../utils/helper";
 import { Sub } from "./Sub";
 import { Comment } from "./Comment";
+import { Expose } from "class-transformer";
+import { Vote } from "./Votes";
 
 @TOEntity("posts")
 export class Post extends Entity {
@@ -37,6 +39,9 @@ export class Post extends Entity {
   @Column()
   subName: string;
 
+  @Column()
+  userName: string;
+
   @ManyToOne(() => User, (user) => user.posts)
   @JoinColumn({ name: "userName", referencedColumnName: "userName" })
   user: User;
@@ -47,6 +52,30 @@ export class Post extends Entity {
 
   @OneToMany(() => Comment, (comment) => comment.post)
   comment: Comment[];
+
+  @OneToMany(() => Vote, (vote) => vote.post)
+  votes: Vote[];
+
+  @Expose()
+  public get url(): string {
+    return `/r/${this.subName}/${this.identifier}/${this.slug}`;
+  }
+
+  @Expose()
+  public get commentCount(): number {
+    return this.comment?.length;
+  }
+
+  @Expose()
+  public get voteScore(): number {
+    return this.votes?.reduce((prev, curr) => prev + (curr.value || 0), 0);
+  }
+
+  protected userVote: number;
+  setUserVote(user: User) {
+    const index = this.votes.findIndex((v) => v.userName === user.userName);
+    this.userVote = index > -1 ? this.votes[index].value : 0;
+  }
 
   @BeforeInsert()
   makeIdAndSlug() {
