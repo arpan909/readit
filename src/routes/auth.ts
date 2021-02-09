@@ -5,6 +5,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import cookie from "cookie";
 import auth from "../middleware/authMidd";
+import auth2 from "../middleware/auth2";
 
 const mapErrors = (errors: Object[]) => {
   return errors.reduce((prev: any, curr: any) => {
@@ -107,7 +108,7 @@ const logout = (_: Request, res: Response) => {
 const router = Router();
 router.post("/register", register);
 router.post("/login", login);
-router.get("/me", auth, me);
-router.get("/logout", auth, logout);
+router.get("/me", auth2, auth, me);
+router.get("/logout", auth2, auth, logout);
 
 export default router;

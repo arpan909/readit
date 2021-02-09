@@ -1,5 +1,6 @@
 import { Request, Response, Router } from "express";
 import { Sub } from "../entities/Sub";
+import auth2 from "../middleware/auth2";
 import authMidd from "../middleware/authMidd";
 
 const createSub = async (req: Request, res: Response) => {
@@ -30,6 +31,6 @@ const createSub = async (req: Request, res: Response) => {
 };
 
 const router = Router();
-router.post("/", authMidd, createSub);
+router.post("/", auth2, authMidd, createSub);
 
 export default router;

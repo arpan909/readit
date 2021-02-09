@@ -2,9 +2,10 @@ import { Request, Response, Router } from "express";
 import { Comment } from "../entities/Comment";
 import { Post } from "../entities/Post";
 import { Vote } from "../entities/Votes";
+import auth2 from "../middleware/auth2";
 import authMidd from "../middleware/authMidd";
 
-const vote = async (req: Request, res: Response) => {
+const voteRoute = async (req: Request, res: Response) => {
   const { identifier, slug, commentId, value } = req.body;
 
   if (![-1, 0, 1].includes(value))
@@ -54,5 +55,5 @@ const vote = async (req: Request, res: Response) => {
 };
 
 const router = Router();
-router.post("/vote", authMidd, vote);
+router.post("/vote", auth2, authMidd, voteRoute);
 export default router;
