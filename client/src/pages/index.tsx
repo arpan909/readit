@@ -1,7 +1,6 @@
 import axios from "axios";
 import Head from "next/head";
-import Link from "next/link";
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";

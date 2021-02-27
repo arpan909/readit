@@ -1,26 +1,34 @@
 import axios from "axios";
 import Head from "next/head";
 import Link from "next/link";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
 import { useRouter } from "next/router";
 
 import InputGroup from "../components/InputGroup";
+import { useAuthDispatch, useAuthState } from "../context/auth";
 
-export default function Register() {
+export default function Login() {
+  const { authentication } = useAuthState();
+  const router = useRouter();
+  if (authentication) {
+    router.push("/");
+  }
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState<any>({});
 
-  const router = useRouter();
-
+  const dipsatch = useAuthDispatch();
   const submitForm = async (e: FormEvent) => {
     e.preventDefault();
 
     try {
-      await axios.post("/auth/login", {
+      const res = await axios.post("/auth/login", {
         password,
         userName,
       });
+      // console.log(res.data);
+
+      dipsatch({ type: "LOGIN", payload: res.data.user });
       router.push("/");
     } catch (error) {
       setErrors(error.response.data);

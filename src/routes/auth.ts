@@ -44,6 +44,18 @@ const register = async (req: Request, res: Response) => {
     }
     await user.save();
 
+    const token = jwt.sign({ userName }, "" + process.env.SECRET_KEY);
+    res.set(
+      "Set-Cookie",
+      cookie.serialize("token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        maxAge: 36000,
+        path: "/",
+      })
+    );
+
     //Returning the userdata
     return res.json(user);
   } catch (error) {
@@ -88,7 +100,7 @@ const login = async (req: Request, res: Response) => {
 };
 
 const me = (_: Request, res: Response) => {
-  return res.json(res.locals.user);
+  return res.json({ user: res.locals.user });
 };
 
 const logout = (_: Request, res: Response) => {

@@ -6,6 +6,8 @@ import dayjs from "dayjs";
 import axios from "axios";
 
 import classNames from "classnames";
+import { useAuthState } from "../context/auth";
+import { useRouter } from "next/router";
 
 dayjs.extend(relativeTime);
 export default function PostCard({
@@ -23,6 +25,8 @@ export default function PostCard({
     userVote,
   },
 }) {
+  const { authentication } = useAuthState();
+  const router = useRouter();
   const vote = async (value) => {
     try {
       const res = await axios.post("/misc/vote", { identifier, slug, value });
@@ -42,7 +46,7 @@ export default function PostCard({
               "text-red-500 bg-gray-300": userVote === 1,
             }
           )}
-          onClick={() => vote(1)}
+          onClick={authentication ? () => vote(1) : () => router.push("/login")}
         >
           <i className="fas fa-angle-up"></i>
         </div>
@@ -52,7 +56,9 @@ export default function PostCard({
             "w-6 text-gray-400 rounded cursor-pointer hover:bg-gray-300 hover:text-blue-600",
             { "text-blue-600 bg-gray-300": userVote === -1 }
           )}
-          onClick={() => vote(-1)}
+          onClick={
+            authentication ? () => vote(-1) : () => router.push("/login")
+          }
         >
           <i className="fas fa-angle-down"></i>
         </div>
@@ -61,7 +67,7 @@ export default function PostCard({
       {/* Post Data Section */}
       <div className="w-full p-2">
         <div className="flex item-center">
-          <Link href={`r/${subName}`}>
+          <Link href={authentication ? `r/${subName}` : `/login`}>
             <Fragment>
               <img
                 src="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"
@@ -74,22 +80,22 @@ export default function PostCard({
           </Link>
           <p className="text-xs text-gray-500">
             <span className="mx-1">•</span> Posted By
-            <Link href={`/u/${userName}`}>
+            <Link href={authentication ? `/u/${userName}` : `/login`}>
               <a className="mx-1 hover:underline">u/{userName}</a>
             </Link>
-            <Link href={url}>
+            <Link href={authentication ? url : "/login"}>
               <a className="mx-1 hover:underline">
                 {dayjs(createdAt).fromNow()}
               </a>
             </Link>
           </p>
         </div>
-        <Link href={url}>
+        <Link href={authentication ? url : "/login"}>
           <a className="my-1 text-lg font-semibold ">{title}</a>
         </Link>
         {body && <p className="my-1 text-sm">{body}</p>}
         <div className="flex">
-          <Link href={url}>
+          <Link href={authentication ? url : "/login"}>
             <a>
               <div className="px-1 py-1 mr-1 text-xs text-gray-500 transition rounded cursor-pointer hover:bg-gray-200">
                 <i className="mr-1 fas fa-comment"></i>
