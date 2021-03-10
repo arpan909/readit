@@ -68,16 +68,17 @@ export default function PostCard({
       <div className="w-full p-2">
         <div className="flex item-center">
           <Link href={authentication ? `r/${subName}` : `/login`}>
-            <Fragment>
-              <img
-                src="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"
-                className="w-6 h-6 mr-1 rounded-full cursor-pointer"
-              />
-              <a className="text-xs font-bold cursor-pointer hover:underline">
-                r/{subName}
-              </a>
-            </Fragment>
+            <img
+              src="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"
+              className="w-6 h-6 mr-1 rounded-full cursor-pointer"
+            />
           </Link>
+          <Link href={authentication ? `r/${subName}` : `/login`}>
+            <a className="text-xs font-bold cursor-pointer hover:underline">
+              r/{subName}
+            </a>
+          </Link>
+
           <p className="text-xs text-gray-500">
             <span className="mx-1">•</span> Posted By
             <Link href={authentication ? `/u/${userName}` : `/login`}>
